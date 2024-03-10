@@ -4,7 +4,10 @@ const propertiesReader = require("properties-reader");
 const path = require("path");
 const { MongoClient } = require("mongodb");
 const cors = require('cors');
+const ordersRouter = require('./routes/orders');
 app.use(cors());
+app.use(express.json());
+app.use('/api', ordersRouter);
 
 // 加载配置文件
 let propertiesPath = path.resolve(__dirname, "conf/db.properties");
@@ -34,7 +37,7 @@ const connectToDatabase = async () => {
 
 connectToDatabase();
 
-app.get('/api/lessons', async (req, res) => {
+app.get('/lessons', async (req, res) => {
     try {
         const db = client.db(dbName);
         const lessons = await db.collection('lessons').find().toArray();
@@ -44,7 +47,7 @@ app.get('/api/lessons', async (req, res) => {
     }
 });
 
-app.get('/api/orders', async (req, res) => {
+app.get('/orders', async (req, res) => {
     try {
         const db = client.db(dbName);
         const orders = await db.collection('orders').find().toArray();
